@@ -39,13 +39,17 @@ public class BeaconListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void add(Beacon beacon) {
-        mBeacons.add(beacon);
-        notifyDataSetChanged();
+        if(!mBeacons.contains(beacon)) {
+            mBeacons.add(beacon);
+            notifyDataSetChanged();
+        }
     }
 
     public void remove(Beacon beacon) {
-        mBeacons.remove(beacon);
-        notifyDataSetChanged();
+        if(mBeacons.contains(beacon)) {
+            mBeacons.remove(beacon);
+            notifyDataSetChanged();
+        }
     }
 
     public class BeaconViewHolder extends RecyclerView.ViewHolder {
