@@ -18,7 +18,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
+    private ArrayList<Beacon> mBeacons = new ArrayList<>();
+    private BeaconListAdapter mAdapter;
 
     MessageListener mMessageListener = new MessageListener() {
         // Called each time a new message is discovered nearby.
@@ -39,19 +41,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAdapter = new BeaconListAdapter(mBeacons);
+        RecyclerView beaconList = (RecyclerView) findViewById(R.id.beaconList);
+        beaconList.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
         mGoogleApiClient.connect();
-
-        //populate this list with beacons
-        ArrayList<Beacon> beacons = new ArrayList<>();
-
-        BeaconListAdapter adapter = new BeaconListAdapter(beacons);
-        RecyclerView beaconList = (RecyclerView) findViewById(R.id.beaconList);
-        beaconList.setAdapter(adapter);
     }
 
     @Override
@@ -65,13 +69,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnected(Bundle bundle) {
-        Nearby.Messages.subscribe(mGoogleApiClient, mMessageListener, Strategy.BLE_ONLY)
-                .setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(Status status) {
+        if (!mGoogleApiClient.isConnected() && !mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.connect();
+        } else {
+            Nearby.Messages.subscribe(mGoogleApiClient, mMessageListener, Strategy.BLE_ONLY)
+                    .setResultCallback(new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
 
-            }
-        });
+                        }
+                    });
+        }
     }
 
     @Override
