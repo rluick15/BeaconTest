@@ -35,7 +35,17 @@ public class BeaconListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mBeacons.size();
+    }
+
+    public void add(Beacon beacon) {
+        mBeacons.add(beacon);
+        notifyDataSetChanged();
+    }
+
+    public void remove(Beacon beacon) {
+        mBeacons.remove(beacon);
+        notifyDataSetChanged();
     }
 
     public class BeaconViewHolder extends RecyclerView.ViewHolder {

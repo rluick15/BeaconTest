@@ -27,12 +27,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         @Override
         public void onFound(Message message) {
             Log.i("BeaconFound", "Found message: " + message);
+
+            Beacon beacon = new Beacon();
+            beacon.setBeaconName(message.getNamespace());
+            mAdapter.add(beacon);
         }
 
         // Called when a message is no longer nearby.
         @Override
         public void onLost(Message message) {
             Log.i("BeaconLost", "Lost message: " + message);
+
+            Beacon beacon = new Beacon();
+            beacon.setBeaconName(message.getNamespace());
+            mAdapter.remove(beacon);
         }
     };;
 
