@@ -13,9 +13,9 @@ import java.util.ArrayList;
  */
 public class BeaconListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Beacon> mBeacons;
+    private ArrayList<eBeacon> mBeacons;
 
-    public BeaconListAdapter(ArrayList<Beacon> beaconList) {
+    public BeaconListAdapter(ArrayList<eBeacon> beaconList) {
         this.mBeacons = beaconList;
     }
 

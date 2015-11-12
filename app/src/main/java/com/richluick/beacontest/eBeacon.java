@@ -3,7 +3,7 @@ package com.richluick.beacontest;
 /**
  * Created by q1410049 on 11/9/15.
  */
-public class Beacon {
+public class eBeacon {
 
     private String beaconName;
     private int beaconDistance;
