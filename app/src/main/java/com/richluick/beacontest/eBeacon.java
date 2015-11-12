@@ -5,8 +5,8 @@ package com.richluick.beacontest;
  */
 public class eBeacon {
 
-    private String beaconName;
-    private int beaconDistance;
+    private String beaconName = "";
+    private String beaconDistance = "";
 
     public String getBeaconName() {
         return beaconName;
@@ -16,11 +16,11 @@ public class eBeacon {
         this.beaconName = beaconName;
     }
 
-    public int getBeaconDistance() {
+    public String getBeaconDistance() {
         return beaconDistance;
     }
 
-    public void setBeaconDistance(int beaconDistance) {
+    public void setBeaconDistance(String beaconDistance) {
         this.beaconDistance = beaconDistance;
     }
 }
