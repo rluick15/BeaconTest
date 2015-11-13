@@ -15,11 +15,7 @@ import java.util.ArrayList;
  */
 public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.BeaconViewHolder> {
 
-    private ArrayList<Beacon> mBeacons;
-
-    public BeaconListAdapter(ArrayList<Beacon> beaconList) {
-        this.mBeacons = beaconList;
-    }
+    private ArrayList<Beacon> mBeacons = new ArrayList<>();
 
     @Override
     public BeaconListAdapter.BeaconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,12 +27,19 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.Be
     public void onBindViewHolder(BeaconListAdapter.BeaconViewHolder holder, int position) {
         String dist = String.format("%.2f", mBeacons.get(position).getDistance());
 
+        //int instanceId = Integer.decode(String.valueOf(mBeacons.get(position).getId2()));
+
         holder.beaconName.setText(mBeacons.get(position).getBluetoothName());
         holder.beaconDist.setText(dist + " m");
     }
 
-    public void updateBeaconList(ArrayList<Beacon> beacons) {
-        mBeacons = beacons;
+    public void clearBeacons() {
+        mBeacons.clear();
+        notifyDataSetChanged();
+    }
+
+    public void add(Beacon beacon) {
+        mBeacons.add(beacon);
         notifyDataSetChanged();
     }
 
