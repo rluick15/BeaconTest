@@ -3,7 +3,6 @@ package com.richluick.beacontest;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,14 +13,14 @@ import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MainActivity extends AppCompatActivity implements BeaconConsumer, RangeNotifier {
+public class MainActivity extends AppCompatActivity implements BeaconConsumer, RangeNotifier, GetCustomerAsync.OnTaskCompletedListener {
 
     private ArrayList<Beacon> mFoundBeacons = new ArrayList<>();
     private BeaconListAdapter mAdapter;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
         mAdapter.clearBeacons();
         mFoundBeacons.clear();
 
-        final Region region = new Region("ibeacon-region", null, null, null);
+        final Region region =   new Region("beacon-region", Identifier.parse("0x462e75589cdc517d8d36"), null, null);
         try {
             mBeaconManager.startRangingBeaconsInRegion(region);
         } catch (RemoteException e) {
@@ -109,10 +108,18 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer, R
                         //todo: adapter will be switched to take customer objects
                         mProgressBar.setVisibility(View.GONE);
                         mAdapter.add(beacon);
+
+                        //handles the request to the server
+                        new GetCustomerAsync(beacon, MainActivity.this).execute();
                     }
                 });
             }
         }
+    }
+
+    @Override
+    public void onTaskCompleted(Customer customer) {
+        //todo: set the adapter here
     }
 
     /*
